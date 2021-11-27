@@ -34,11 +34,16 @@ class Recognizer(Recognizer):
             model_path = get_model_path()
             data_path = get_data_path()
 
-            config = {
+            config_dict = {
                 'hmm': os.path.join(model_path, 'en-us'),
                 'lm': os.path.join(model_path, 'en-us.lm.bin'),
-                'dict': os.path.join(model_path, 'cmudict-en-us.dict')
+                'dict': os.path.join(model_path, 'cmudict-en-us.dict'),
+                'allphone': os.path.join(model_path, 'en-us.lm.dmp'),
+                'lw': 2.0,
+                'beam': 1e-10,
+                'pbeam': 1e-10
             }
+
 
             #ps = Pocketsphinx(**config)
             #ps.decode(
@@ -61,7 +66,7 @@ class Recognizer(Recognizer):
             #    phoneme_dictionary_file = os.path.join(language_directory, "pronounciation-dictionary.dict")
             #else:  # 3-tuple of Sphinx data file paths
             #    acoustic_parameters_directory, language_model_file, phoneme_dictionary_file = language
-            acoustic_parameters_directory, language_model_file, phoneme_dictionary_file = config['hmm'], config['lm'], config['dict']
+            acoustic_parameters_directory, language_model_file, phoneme_dictionary_file = config_dict['hmm'], config_dict['lm'], config_dict['dict']
             if not os.path.isdir(acoustic_parameters_directory):
                 raise RequestError("missing PocketSphinx language model parameters directory: \"{}\"".format(acoustic_parameters_directory))
             if not os.path.isfile(language_model_file):
@@ -74,6 +79,10 @@ class Recognizer(Recognizer):
             config.set_string("-hmm", acoustic_parameters_directory)  # set the path of the hidden Markov model (HMM) parameter files
             config.set_string("-lm", language_model_file)
             config.set_string("-dict", phoneme_dictionary_file)
+            config.set_string("-allphone", config_dict['allphone'])
+            config.set_float("-lw", config_dict['lw'])
+            config.set_float("-beam", config_dict['beam'])
+            config.set_float("-pbeam", config_dict['pbeam'])
             config.set_string("-logfn", os.devnull)  # disable logging (logging causes unwanted output in terminal)
             decoder = pocketsphinx.Decoder(config)
 
