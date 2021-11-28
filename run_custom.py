@@ -1,15 +1,12 @@
 #!/usr/bin/env python3                                                                                
 
+import os
 import pprint
 
-#built-in
-#import speech_recognition as sr  
-
-#custom
-import custom_speech_recognition as sr
+#import speech_recognition as sr    #built-in
+import custom_speech_recognition as sr  #custom
 from speech_recognition import AudioData
 import pocketsphinx as px
-import os
 
 # get audio from the microphone                                                                       
 r = sr.Recognizer()                                                                                   
@@ -48,11 +45,6 @@ def print_phonemes(decoder):
 
 def main():
     try:
-        #print("You said " + r.recognize_google(audio))
-        #pprint.pprint(r.recognize_google(audio, show_all=True))
-        #print("You said " + r.recognize_sphinx(audio))
-        #pprint.pprint(r2.recognize_sphinx(audio, show_all=True))
-        #decoder = r.recognize_sphinx(audio, show_all=True)
         decoder = r.build_decoder()
         decode_sample(decoder)
         print_phonemes(decoder)
@@ -60,8 +52,6 @@ def main():
         decoder = r.build_decoder()
         decode_capture(decoder)
         print_phonemes(decoder)
-
-
 
     except sr.UnknownValueError:
         print("Could not understand audio")
