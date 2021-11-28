@@ -6,7 +6,7 @@ import os
 
 class Recognizer(Recognizer):
 
-    def recognize_sphinx(self, audio_data, language="en-US", keyword_entries=None, grammar=None, show_all=False):
+    def build_decoder(self, language="en-US", keyword_entries=None, grammar=None):
             """
             Performs speech recognition on ``audio_data`` (an ``AudioData`` instance), using CMU Sphinx.
             The recognition language is determined by ``language``, an RFC5646 language tag like ``"en-US"`` or ``"en-GB"``, defaulting to US English. Out of the box, only ``en-US`` is supported. See `Notes on using `PocketSphinx <https://github.com/Uberi/speech_recognition/blob/master/reference/pocketsphinx.rst>`__ for information about installing other languages. This document is also included under ``reference/pocketsphinx.rst``. The ``language`` parameter can also be a tuple of filesystem paths, of the form ``(acoustic_parameters_directory, language_model_file, phoneme_dictionary_file)`` - this allows you to load arbitrary Sphinx models.
@@ -15,7 +15,6 @@ class Recognizer(Recognizer):
             Returns the most likely transcription if ``show_all`` is false (the default). Otherwise, returns the Sphinx ``pocketsphinx.pocketsphinx.Decoder`` object resulting from the recognition.
             Raises a ``speech_recognition.UnknownValueError`` exception if the speech is unintelligible. Raises a ``speech_recognition.RequestError`` exception if there are any issues with the Sphinx installation.
             """
-            assert isinstance(audio_data, AudioData), "``audio_data`` must be audio data"
             assert isinstance(language, str) or (isinstance(language, tuple) and len(language) == 3), "``language`` must be a string or 3-tuple of Sphinx data file paths of the form ``(acoustic_parameters, language_model, phoneme_dictionary)``"
             assert keyword_entries is None or all(isinstance(keyword, (type(""), type(u""))) and 0 <= sensitivity <= 1 for keyword, sensitivity in keyword_entries), "``keyword_entries`` must be ``None`` or a list of pairs of strings and numbers between 0 and 1"
 
@@ -45,27 +44,6 @@ class Recognizer(Recognizer):
             }
 
 
-            #ps = Pocketsphinx(**config)
-            #ps.decode(
-            #    audio_file=os.path.join(data_path, 'goforward.raw'),
-            #    buffer_size=2048,
-            #    no_search=False,
-            #    full_utt=False
-            #)
-
-            #--
-
-            #import pdb; pdb.set_trace()
-
-            #if isinstance(language, str):  # directory containing language data
-            #    language_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pocketsphinx-data", language)
-            #    if not os.path.isdir(language_directory):
-            #        raise RequestError("missing PocketSphinx language data directory: \"{}\"".format(language_directory))
-            #    acoustic_parameters_directory = os.path.join(language_directory, "acoustic-model")
-            #    language_model_file = os.path.join(language_directory, "language-model.lm.bin")
-            #    phoneme_dictionary_file = os.path.join(language_directory, "pronounciation-dictionary.dict")
-            #else:  # 3-tuple of Sphinx data file paths
-            #    acoustic_parameters_directory, language_model_file, phoneme_dictionary_file = language
             acoustic_parameters_directory, language_model_file, phoneme_dictionary_file = config_dict['hmm'], config_dict['lm'], config_dict['dict']
             if not os.path.isdir(acoustic_parameters_directory):
                 raise RequestError("missing PocketSphinx language model parameters directory: \"{}\"".format(acoustic_parameters_directory))
@@ -85,9 +63,6 @@ class Recognizer(Recognizer):
             config.set_float("-pbeam", config_dict['pbeam'])
             config.set_string("-logfn", os.devnull)  # disable logging (logging causes unwanted output in terminal)
             decoder = pocketsphinx.Decoder(config)
-
-            # obtain audio data
-            raw_data = audio_data.get_raw_data(convert_rate=16000, convert_width=2)  # the included language models require audio to be 16-bit mono 16 kHz in little-endian format
 
             # obtain recognition results
             if keyword_entries is not None:  # explicitly specified set of keywords
@@ -115,13 +90,5 @@ class Recognizer(Recognizer):
                 decoder.set_fsg(grammar_name, fsg)
                 decoder.set_search(grammar_name)
 
-            decoder.start_utt()  # begin utterance processing
-            decoder.process_raw(raw_data, False, True)  # process audio data with recognition enabled (no_search = False), as a full utterance (full_utt = True)
-            decoder.end_utt()  # stop utterance processing
+            return decoder
 
-            if show_all: return decoder
-
-            # return results
-            hypothesis = decoder.hyp()
-            if hypothesis is not None: return hypothesis.hypstr
-            raise UnknownValueError()  # no transcriptions available
