@@ -7,6 +7,7 @@ import pprint
 import custom_speech_recognition as sr  #custom
 from speech_recognition import AudioData
 import pocketsphinx as px
+from vizualization import Viz
 
 # get audio from the microphone                                                                       
 r = sr.Recognizer()                                                                                   
@@ -37,17 +38,27 @@ def decode_capture(decoder):
     decoder.end_utt()  # stop utterance processing
 
 def print_phonemes(decoder):
-        hypothesis = decoder.hyp()
+      hypothesis = decoder.hyp()
+      if hypothesis:
         hypstr = hypothesis.hypstr
         pprint.pprint(hypstr)
-        segments = [(s.word, s.start_frame, s.end_frame) for s in decoder.seg()]
+        #segments = [(s.word, s.start_frame, s.end_frame, s.prob, s.ascore, s.lscore, s.lback) for s in decoder.seg()]
+        segments = [(s.word, s.start_frame, s.end_frame, s.ascore) for s in decoder.seg()]
         pprint.pprint(segments)
+      else:
+        print("could not decode any speech")
+
+      return segments
 
 def main():
     try:
         decoder = r.build_decoder()
+        viz = Viz()
         decode_sample(decoder)
-        print_phonemes(decoder)
+        phonemes = print_phonemes(decoder)
+        viz.viz_phonemes(phonemes)
+
+        return
 
         decoder = r.build_decoder()
         decode_capture(decoder)
