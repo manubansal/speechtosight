@@ -10,7 +10,7 @@ from abc import ABC
 
 class Viz(ABC):
 
-  VMIN = -500
+  VMIN = -300
   VMAX = 0
   figsize = (18, 8)
 
@@ -33,7 +33,7 @@ class VizSimple(Viz):
     for phone in phonemes:
       ph, start, end, ascore = phone
       key = self.pm.keymap[ph] - 1
-      keys[key, start - min_frame:end - min_frame] = ascore
+      keys[key, start - min_frame:end - min_frame + 1] = ascore
     pprint.pprint(keys)
     pprint.pprint('n_keys:' + str(n_keys))
     return keys
@@ -125,14 +125,16 @@ class VizBilinear(VizSimple):
           keys = self.phoneme_to_key(g)
           keys = self.phoneme_to_mask(g, keys)
           if i == 0:
-            #sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=key_list, vmin=VMIN, vmax=VMAX)
-            #sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=range(1,len(key_list)+1), vmin=VMIN, vmax=VMAX)
-            sns.heatmap(keys, cbar=False, ax=axs[i], vmin=self.VMIN, vmax=self.VMAX)
+            yticklabels=True
           else:
-            #sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=key_list, vmin=VMIN, vmax=VMAX)
-            #sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=range(1,len(key_list)+1), vmin=VMIN, vmax=VMAX)
-            sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=False, vmin=self.VMIN, vmax=self.VMAX)
+            yticklabels=False
 
+          if len(g) == 1 and pm.is_consonant(g[0][0]):
+            cmap = "mako"
+          else:
+            cmap = None
+
+          sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=yticklabels, vmin=self.VMIN, vmax=self.VMAX, cmap=cmap)
 
         #fig.colorbar(axs[1].collections[0], cax=axs[2])
 
