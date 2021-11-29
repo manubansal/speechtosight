@@ -2,6 +2,7 @@
 
 import os
 import pprint
+import argparse
 
 #import speech_recognition as sr    #built-in
 import custom_speech_recognition as sr  #custom
@@ -51,18 +52,24 @@ def print_phonemes(decoder):
       return segments
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test", "-t", help="run on test audio sample", action="store_true")
+    args = parser.parse_args()
     try:
+        if args.test:
+            decoder = r.build_decoder()
+            viz = Viz()
+            decode_sample(decoder)
+            phonemes = print_phonemes(decoder)
+            viz.viz_phonemes(phonemes)
+
+            return
+
         decoder = r.build_decoder()
         viz = Viz()
-        decode_sample(decoder)
+        decode_capture(decoder)
         phonemes = print_phonemes(decoder)
         viz.viz_phonemes(phonemes)
-
-        return
-
-        decoder = r.build_decoder()
-        decode_capture(decoder)
-        print_phonemes(decoder)
 
     except sr.UnknownValueError:
         print("Could not understand audio")
