@@ -5,11 +5,16 @@ import pprint
 import seaborn as sns
 import phoneme_map as pm
 from phoneme_map import LinearPhonemeMap
+import abc
+from abc import ABC
+
+class Viz(ABC):
+  @abc.abstractmethod
+  def viz_phonemes(self, phonemes):
+    pass
 
 
-
-
-class VizSimple:
+class VizSimple(Viz):
   def __init__(self):
     self.pm = LinearPhonemeMap()
 
@@ -71,3 +76,10 @@ class VizChunked(VizSimple):
         fig.tight_layout()
         plt.show()
 
+
+class VizBilinear(Viz):
+  def __init__(self):
+    pass
+
+  def viz_phonemes(self, phonemes):
+      pass

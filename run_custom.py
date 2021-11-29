@@ -8,7 +8,7 @@ import argparse
 import custom_speech_recognition as sr  #custom
 from speech_recognition import AudioData
 import pocketsphinx as px
-from vizualization import VizSimple, VizChunked
+from vizualization import VizSimple, VizChunked, VizBilinear
 
 # get audio from the microphone                                                                       
 r = sr.Recognizer()                                                                                   
@@ -54,7 +54,7 @@ def print_phonemes(decoder):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--test", "-t", help="run on test audio sample", action="store_true")
-    parser.add_argument("--viz", "-v", help="type of vizualization <simple|[chunked]>", default='chunked')
+    parser.add_argument("--viz", "-v", help="type of vizualization <simple|[chunked]|bilinear>", default='chunked')
     args = parser.parse_args()
     try:
         if args.test:
@@ -71,6 +71,8 @@ def main():
           viz = VizSimple()
         elif args.viz == 'chunked':
           viz = VizChunked()
+        elif args.viz == 'bilinear':
+          viz = VizBilinear()
         else:
           print('unknown viz type, cannot vizualize')
         viz.viz_phonemes(phonemes)
