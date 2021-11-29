@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 import pprint
 import seaborn as sns
 import phoneme_map as pm
-from phoneme_map import PhonemeMap
+from phoneme_map import LinearPhonemeMap
 
 
 class Viz:
   def __init__(self):
-    self.pm = PhonemeMap()
+    self.pm = LinearPhonemeMap()
 
   def phoneme_to_key(self, phonemes):
     n_phones = len(phonemes)
@@ -28,11 +28,11 @@ class Viz:
 
   def viz_phonemes(self, phonemes):
         pprint.pprint(phonemes)
-        phone_groups = self.pm.phoneme_list_to_groups(phonemes)
+        phone_groups = pm.phoneme_list_to_groups(phonemes)
         pprint.pprint(phone_groups)
 
         n_groups = len(phone_groups)
-        group_lengths = self.pm.phone_groups_to_group_lengths(phone_groups)
+        group_lengths = pm.phone_groups_to_group_lengths(phone_groups)
         pprint.pprint(group_lengths)
 
         VMIN = -500
@@ -59,7 +59,7 @@ class Viz:
 
 class VizSimple:
   def __init__(self):
-    self.pm = PhonemeMap()
+    self.pm = LinearPhonemeMap()
 
   def phoneme_to_key(self, phonemes):
     n_phones = len(phonemes)
