@@ -34,8 +34,6 @@ class VizSimple(Viz):
       ph, start, end, ascore = phone
       key = self.pm.keymap[ph] - 1
       keys[key, start - min_frame:end - min_frame + 1] = ascore
-    pprint.pprint(keys)
-    pprint.pprint('n_keys:' + str(n_keys))
     return keys
 
   def viz_phonemes(self, phonemes):
@@ -106,7 +104,6 @@ class VizBilinear(VizSimple):
         self.mask_out_consonant_blanks(keys, start, end)
       else:
         self.mask_out_vowel_blanks(keys, start, end)
-    pprint.pprint(keys)
     return keys
 
   def viz_phonemes(self, phonemes):
