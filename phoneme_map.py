@@ -104,3 +104,40 @@ class PhonemeMap:
     key_ids = [k for k, v in key_list]
     return key_list, key_idxs, key_ids
 
+  def is_consonant(self, phone):
+    return phone.lower() in phoneme_ylevel_consonants
+
+  '''this method translates a phoneme list like [(ph1, start, end, ...), (ph2,
+  start, end, ...), ...] to a list of lists where each element in the outer
+  list is a phoneme group where the first phoneme in the group is a consonant.
+  so it will look like [[(ph1,..),(ph2,..)], [(ph3,...),(ph4,...)], ...] where
+  ph1 is a consonant and ph2 is a vowel, ph3 is a consonant and the rest of the
+  phones in the group are all vowels, and so on.'''
+  def phoneme_list_to_groups(self, phonemes):
+    if len(phonemes) == 0:
+      return []
+    g = [phonemes[0]]
+    if len(phonemes) == 1:
+      return [g]
+    r = []
+    for t in phonemes[1:]:
+      p = t[0]
+      print(p, self.is_consonant(p))
+      if not self.is_consonant(p):
+        g.append(t)
+        continue
+      else:
+        r.append(g)
+        g = [t]
+    if g:
+      r.append(g)
+    return r
+
+
+  def phone_groups_to_group_lengths(self, phone_groups):
+    lengths = []
+    for g in phone_groups:
+      start = g[0][1]
+      end = g[-1][2]
+      lengths.append(end - start + 1)
+    return lengths
