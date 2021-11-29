@@ -111,7 +111,7 @@ class VizBilinear(VizSimple):
 
   def viz_phonemes(self, phonemes):
         pprint.pprint(phonemes)
-        phone_groups = pm.phoneme_list_to_groups(phonemes)
+        phone_groups = pm.phoneme_list_to_groups(phonemes, sticky_consonants=False)
         pprint.pprint(phone_groups)
 
         n_groups = len(phone_groups)

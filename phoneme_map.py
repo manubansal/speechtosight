@@ -57,13 +57,14 @@ def is_consonant(phone):
   return phone.lower() in phoneme_consonants
 
 
-'''this method translates a phoneme list like [(ph1, start, end, ...), (ph2,
-start, end, ...), ...] to a list of lists where each element in the outer
-list is a phoneme group where the first phoneme in the group is a consonant.
-so it will look like [[(ph1,..),(ph2,..)], [(ph3,...),(ph4,...)], ...] where
-ph1 is a consonant and ph2 is a vowel, ph3 is a consonant and the rest of the
-phones in the group are all vowels, and so on.'''
-def phoneme_list_to_groups(phonemes):
+'''In the sticky_consonants=True mode, this method translates a phoneme list
+like [(ph1, start, end, ...), (ph2, start, end, ...), ...] to a list of lists
+where each element in the outer list is a phoneme group where the first phoneme
+in the group is a consonant.  so it will look like [[(ph1,..),(ph2,..)],
+[(ph3,...),(ph4,...)], ...] where ph1 is a consonant and ph2 is a vowel, ph3 is
+a consonant and the rest of the phones in the group are all vowels, and so on.
+When sticky_consonants=False, consonants are kept in groups by themselves.'''
+def phoneme_list_to_groups(phonemes, sticky_consonants=True):
   if len(phonemes) == 0:
     return []
   g = [phonemes[0]]
@@ -81,6 +82,24 @@ def phoneme_list_to_groups(phonemes):
       g = [t]
   if g:
     r.append(g)
+
+
+  if not sticky_consonants:
+    z = []
+    for g in r:
+      if len(g) == 1:
+        z.append(g)
+        continue
+      p0 = g[0][0]
+      if is_consonant(p0):
+        g1 = [g[0]]
+        g2 = g[1:]
+        z.append(g1)
+        z.append(g2)
+      else:
+        raise Exception("should not happen")
+    r = z
+
   return r
 
 
