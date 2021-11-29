@@ -92,6 +92,50 @@ def phone_groups_to_group_lengths(phone_groups):
     lengths.append(end - start + 1)
   return lengths
 
+class BilinearPhonemeMap:
+  phoneme_ylevels = {
+    'b'    : 1,     'aa' : 1,
+    '.2'   : 2,
+    'p'    : 3,
+    '.4'   : 4,
+    'd'    : 5,
+    'dh'   : 6,     'ah' : 6,
+    '.7'   : 7,     'ax' : 7,
+    't'    : 8,     'er' : 8,
+    'th'   : 9,     'axr': 9,
+    '.10'  : 10,
+    'g'    : 11,
+    'k'    : 12,
+    'ng'   : 13,
+    '.14'  : 14,    'ay' : 14,
+    'v'    : 15,    'iy' : 15,
+    'f'    : 16,    'ih' : 16,
+    '.17'  : 17,
+    'z'    : 18,
+    's'    : 19,
+    '.20'  : 20,
+    'ch'   : 21,    'ae' : 21,
+    'jh'   : 22,    'ey' : 22,
+    '.23'  : 23,    'eh' : 23,
+    'm'    : 24,    'oy' : 24,
+    'n'    : 25,
+    '.26'  : 26,
+    'w'    : 27,
+    '.28'  : 28,
+    'y'    : 29,    'aw': 29,
+    '.30'  : 30,    'uw': 30,
+    'hh'   : 31,    'uh': 31,
+    '.32'  : 32,
+    'r'    : 33,
+    '.34'  : 34,
+    'l'    : 35,
+    'zh'   : 36,    'ao': 36,
+    'sh'   : 37,    'ow': 37,
+    '.38'  : 38,
+    '+spn+': 39,
+    '+nsn+': 40,
+    'sil'  : 41
+  }
 
 class LinearPhonemeMap:
   phoneme_ylevel_vowels = {
