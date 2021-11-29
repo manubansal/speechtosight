@@ -46,11 +46,13 @@ class Viz:
           if i == 0:
             sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=key_list, vmin=VMIN, vmax=VMAX)
           else:
-            sns.heatmap(keys, cbar=False, ax=axs[i], vmin=VMIN, vmax=VMAX)
+            #sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=key_list, vmin=VMIN, vmax=VMAX)
+            sns.heatmap(keys, cbar=False, ax=axs[i], yticklabels=range(1,len(key_list)+1), vmin=VMIN, vmax=VMAX)
 
 
         #fig.colorbar(axs[1].collections[0], cax=axs[2])
 
+        fig.tight_layout()
         plt.show()
 
 
