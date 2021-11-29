@@ -96,12 +96,13 @@ class PhonemeMap:
     self.keymap = keymap
     pprint.pprint(keymap)
 
+    self.key_list = [t for t in self.keymap.items()]
+    self.key_list.sort(key = lambda t: t[1])
+    self.key_idxs = [v for k, v in self.key_list]
+    self.key_ids = [k for k, v in self.key_list]
+
   def get_key_list(self):
-    key_list = [t for t in self.keymap.items()]
-    key_list.sort(key = lambda t: t[1])
-    key_idxs = [v for k, v in key_list]
-    key_ids = [k for k, v in key_list]
-    return key_list, key_idxs, key_ids
+    return self.key_list, self.key_idxs, self.key_ids
 
   def is_consonant(self, phone):
     return phone.lower() in phoneme_ylevel_consonants
