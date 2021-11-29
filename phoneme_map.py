@@ -8,22 +8,21 @@ phoneme_ylevel_vowels = {
   'er': 4,
   'axr': 5,
 
-  'iy': 6,
-  'ih': 7,
+  'ay': 6,
+  'iy': 7,
+  'ih': 8,
 
-  'ae': 8,
-  'ey': 9,
-  'eh': 10,
+  'ae': 9,
+  'ey': 10,
+  'eh': 11,
+  'oy': 12,
 
-  'uw': 11,
-  'uh': 12,
+  'aw': 13,
+  'uw': 14,
+  'uh': 15,
 
-  'ao': 13,
-  'ow': 14,
-
-  'aw': 15,
-  'ay': 16,
-  'oy': 17
+  'ao': 16,
+  'ow': 17
 }
 
 phoneme_ylevel_consonants = {
