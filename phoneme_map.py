@@ -137,6 +137,13 @@ class BilinearPhonemeMap:
     'sil'  : 41
   }
 
+  def __init__(self):
+    keymap = self.phoneme_ylevels
+    keymap = {k.upper(): v for k, v in keymap.items()}
+    self.keymap = keymap
+    pprint.pprint(keymap)
+
+
 class LinearPhonemeMap:
   phoneme_ylevel_vowels = {
     'aa': 1,
@@ -215,9 +222,9 @@ class LinearPhonemeMap:
     num_vowels = len(self.phoneme_ylevel_vowels)
     num_consonants = len(self.phoneme_ylevel_consonants)
     num_specials = len(self.phoneme_ylevel_specials)
-    assert num_vowels == 17
-    assert num_consonants == 24
-    assert num_specials == 3
+    assert num_vowels == len(phoneme_vowels)
+    assert num_consonants == len(phoneme_consonants)
+    assert num_specials == len(phoneme_specials)
     gap1 = 1
     gap2 = 1
     km_v = self.phoneme_ylevel_vowels
