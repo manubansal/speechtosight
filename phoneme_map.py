@@ -95,46 +95,46 @@ def phone_groups_to_group_lengths(phone_groups):
 class BilinearPhonemeMap:
   phoneme_ylevels = {
     'b'    : 1,     'aa' : 1,
-    '.2'   : 2,
-    'p'    : 3,
-    '.4'   : 4,
-    'd'    : 5,
+    '.2'   : 2,     '.2' : 2,
+    'p'    : 3,     '.3' : 3,
+    '.4'   : 4,     '.4' : 4,
+    'd'    : 5,     '.5' : 5,
     'dh'   : 6,     'ah' : 6,
     '.7'   : 7,     'ax' : 7,
     't'    : 8,     'er' : 8,
     'th'   : 9,     'axr': 9,
-    '.10'  : 10,
-    'g'    : 11,
-    'k'    : 12,
-    'ng'   : 13,
+    '.10'  : 10,    '.10': 10,
+    'g'    : 11,    '.11': 11,
+    'k'    : 12,    '.12': 12,
+    'ng'   : 13,    '.13': 13,
     '.14'  : 14,    'ay' : 14,
     'v'    : 15,    'iy' : 15,
     'f'    : 16,    'ih' : 16,
-    '.17'  : 17,
-    'z'    : 18,
-    's'    : 19,
-    '.20'  : 20,
+    '.17'  : 17,    '.17': 17,
+    'z'    : 18,    '.18': 18,
+    's'    : 19,    '.19': 19,
+    '.20'  : 20,    '.20': 20,
     'ch'   : 21,    'ae' : 21,
     'jh'   : 22,    'ey' : 22,
     '.23'  : 23,    'eh' : 23,
     'm'    : 24,    'oy' : 24,
-    'n'    : 25,
-    '.26'  : 26,
-    'w'    : 27,
-    '.28'  : 28,
-    'y'    : 29,    'aw': 29,
-    '.30'  : 30,    'uw': 30,
-    'hh'   : 31,    'uh': 31,
-    '.32'  : 32,
-    'r'    : 33,
-    '.34'  : 34,
-    'l'    : 35,
-    'zh'   : 36,    'ao': 36,
-    'sh'   : 37,    'ow': 37,
-    '.38'  : 38,
-    '+spn+': 39,
-    '+nsn+': 40,
-    'sil'  : 41
+    'n'    : 25,    '.25': 25,
+    '.26'  : 26,    '.26': 26,
+    'w'    : 27,    '.27': 27,
+    '.28'  : 28,    '.28': 28,
+    'y'    : 29,    'aw' : 29,
+    '.30'  : 30,    'uw' : 30,
+    'hh'   : 31,    'uh' : 31,
+    '.32'  : 32,    '.32': 32,
+    'r'    : 33,    '.33': 33,
+    '.34'  : 34,    '.34': 34,
+    'l'    : 35,    '.35': 35,
+    'zh'   : 36,    'ao' : 36,
+    'sh'   : 37,    'ow' : 37,
+    '.38'  : 38,    '.38': 38,
+    '+spn+': 39,    '.39': 39,
+    '+nsn+': 40,    '.40': 40,
+    'sil'  : 41,    '.41': 41
   }
 
   def __init__(self):
@@ -142,6 +142,10 @@ class BilinearPhonemeMap:
     keymap = {k.upper(): v for k, v in keymap.items()}
     self.keymap = keymap
     pprint.pprint(keymap)
+
+    self.keymap_consonants = {k: v for k, v in self.keymap.items() if k.lower() in phoneme_consonants}
+    self.keymap_vowels = {k: v for k, v in self.keymap.items() if k.lower() in phoneme_vowels}
+    self.keymap_specials = {k: v for k, v in self.keymap.items() if k.lower() in phoneme_specials}
 
 
 class LinearPhonemeMap:
